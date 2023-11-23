@@ -45,11 +45,11 @@ export default {
     }
 
     async function resizeEventBind() {
-      window.addEventListener('resize', () => {
-        const pos = getCurPos();
-        sendMessage(pos);
-        initCurPos(pos);
-      });
+      // window.addEventListener('resize', () => {
+      //   const pos = getCurPos();
+      //   sendMessage(pos);
+      //   initCurPos(pos);
+      // });
 
       // TODO: 窗口拖动有权限问题
       // const firstScreen = (await window.getScreenDetails());
@@ -58,6 +58,19 @@ export default {
       //   sendMessage(pos);
       //   init(pos);
       // });
+
+      // 临时的兼容方案，Maybe 性能不是很好
+      function frameSetPos() {
+        const pos = getCurPos();
+        sendMessage(pos);
+        initCurPos(pos);
+
+        console.log('frameSetPos', frameSetPos);
+
+        window.requestAnimationFrame(frameSetPos);
+      }
+
+      window.requestAnimationFrame(frameSetPos);
     }
 
     function getCurPos() {
