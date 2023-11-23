@@ -30,7 +30,7 @@ export default {
       return remoteY.value - curY.value;
     });
 
-    async function createBroadcastChannel() {
+    function createBroadcastChannel() {
       broadcastChannel = new BroadcastChannel('g-ani');
       broadcastChannel.onmessage = handleMessage;
     }
@@ -44,7 +44,7 @@ export default {
       remoteY.value = event.data[1];
     }
 
-    async function resizeEventBind() {
+    function resizeEventBind() {
       // window.addEventListener('resize', () => {
       //   const pos = getCurPos();
       //   sendMessage(pos);
@@ -64,8 +64,6 @@ export default {
         const pos = getCurPos();
         sendMessage(pos);
         initCurPos(pos);
-
-        console.log('frameSetPos', frameSetPos);
 
         window.requestAnimationFrame(frameSetPos);
       }
@@ -141,7 +139,6 @@ $count: 100;
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    
     animation: 
       move 10s infinite linear;
   }
