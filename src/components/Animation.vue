@@ -54,7 +54,6 @@ export default {
       // TODO: 窗口拖动有权限问题
       // const firstScreen = (await window.getScreenDetails());
       // firstScreen.addEventListener('currentscreenchange', () => {
-      //   console.log('dragend', dragend);
       //   const pos = getCurPos();
       //   sendMessage(pos);
       //   init(pos);
