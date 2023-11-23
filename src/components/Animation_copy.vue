@@ -4,9 +4,6 @@
       <ul id="j-main" class="g-main" :style="`--xPos:${xPos}px; --yPos:${yPos}px`">
         <li v-for="(item) in state.items" :key="item.id"></li>
       </ul>
-      <ul class="g-main2" :style="`--xPos:${xPos}px; --yPos:${yPos}px`">
-        <li v-for="(item) in state.itemsCircle" :key="item.id"></li>
-      </ul>
     </div>
   </div>
 </template>
@@ -21,8 +18,7 @@ export default {
     const remoteX = ref(0);
     const remoteY = ref(0);
     const state = reactive({
-      items: [],
-      itemsCircle: []
+      items: []
     });
 
     let broadcastChannel;
@@ -88,13 +84,8 @@ export default {
     }
 
     function initArray() {
-      for(let i = 0; i < 300; i++) {
+      for(let i = 0; i < 100; i++) {
         state.items.push({
-          id: new Date().getTime()
-        });
-      }
-      for(let i = 0; i < 700; i++) {
-        state.itemsCircle.push({
           id: new Date().getTime()
         });
       }
@@ -126,23 +117,19 @@ export default {
 
 
 <style lang="scss">
-$count: 300;
-$countCircle: 700;
-ul {
-  list-style-type: none;
-}
+$count: 100;
 .g-container {
   width :100vw;
   height: 100vh;
   background: #000;
   display: flex;
-  // filter: blur(3px) contrast(100);
+  filter: blur(3px) contrast(100);
 }
 .g-box {
   position: relative;
   margin: auto;
-  width: 2px;
-  height: 2px;  
+  width: 20px;
+  height: 20px;  
 }
 .g-main {
   --x: var(--xPos);
@@ -152,77 +139,16 @@ ul {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    animation: move 10s infinite linear;
+    animation: 
+      move 10s infinite linear;
   }
   @for $i from 1 through $count {
     li:nth-child(#{$i}) {
-      --rx: #{random(30) - 15}px;
-      --ry: #{random(30) - 15}px;
-      background: #fff;
+      background: rgb(255, random(100) + 155, random(100) + 155);
       animation-duration: #{random(12000) + 3000}ms;
       animation-delay: #{$i * (-10000 / $count) - random(10000)}ms;
       scale: #{random(2000) / 1000 + 0.2};
     } 
-  }
-}
-
-.g-main2 {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  padding: 0;
-  transform-style: preserve-3d;
-  perspective: 400px;
-
-  li {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-  }
-  @for $i from 1 through $countCircle {
-    li:nth-child(#{$i}) {
-      --fromX: #{random(360)}deg;
-      --fromY: #{random(360)}deg;
-      --fromZ: #{random(360)}deg;
-      --toX: #{random(360)}deg;
-      --toY: #{random(360)}deg;
-      --toZ: #{random(360)}deg;
-      --fromDis: #{random(10) + 200}px;
-      --toDis: #{random(10) + 200}px;
-      background: #fff;
-      animation: rotate 10s infinite alternate,
-        fadeIn 5s infinite;
-      animation-duration: #{random(5000) + 3000}ms;
-      animation-delay: #{$i * (-10000 / $count) - random(20000)}ms;
-      scale: #{random(200) / 1000 + 0.9};
-    } 
-  }
-}
-
-@keyframes rotate {
-  0% {
-    transform: 
-      rotateX(var(--fromX)) 
-      rotateY(var(--fromY)) 
-      rotateZ(var(--fromZ)) 
-      translateZ(var(--fromDis));
-  }
-  100% {
-    transform: 
-      rotateX(var(--toX)) 
-      rotateY(var(--toY)) 
-      rotateZ(var(--toZ)) 
-      translateZ(var(--toDis));
-  }
-}
-
-@keyframes fadeIn {
-  0%,
-  70% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
   }
 }
 
@@ -231,7 +157,7 @@ ul {
     translate: 0 0;
   }
   100% {
-    translate: calc(var(--x) + var(--rx)) calc(var(--y) + var(--ry));
+    translate: var(--x) var(--y);
   }
 }
 
