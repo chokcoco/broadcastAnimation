@@ -4,7 +4,7 @@
       <ul id="j-main" class="g-main" :style="`--xPos:${xPos}px; --yPos:${yPos}px`">
         <li v-for="(item) in state.items" :key="item.id"></li>
       </ul>
-      <ul class="g-main2" :style="`--xPos:${xPos}px; --yPos:${yPos}px`">
+      <ul class="g-main2">
         <li v-for="(item) in state.itemsCircle" :key="item.id"></li>
       </ul>
     </div>
