@@ -6,7 +6,7 @@
 
 ```
 pnpm i
-npm run dev
+pnpm run dev
 ```
 
 ## Animation Showcase
