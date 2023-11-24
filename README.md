@@ -2,7 +2,7 @@
 
 基于 BroadcastChannel 的跨窗口 CSS 例子动画。
 
-## How tu Run?
+## How to Run?
 
 ```
 pnpm i
