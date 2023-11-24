@@ -11,5 +11,5 @@ npm run dev
 
 ## Animation Showcase
 
-![](./public/bgbg.gif)
 ![](./public/bgbgbg.gif)
+![](./public/bgbg.gif)
