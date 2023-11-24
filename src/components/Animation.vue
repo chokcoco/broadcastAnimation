@@ -88,12 +88,12 @@ export default {
     }
 
     function initArray() {
-      for(let i = 0; i < 300; i++) {
+      for(let i = 0; i < 500; i++) {
         state.items.push({
           id: new Date().getTime()
         });
       }
-      for(let i = 0; i < 700; i++) {
+      for(let i = 0; i < 500; i++) {
         state.itemsCircle.push({
           id: new Date().getTime()
         });
@@ -126,8 +126,8 @@ export default {
 
 
 <style lang="scss">
-$count: 300;
-$countCircle: 700;
+$count: 500;
+$countCircle: 500;
 ul {
   list-style-type: none;
 }
@@ -141,8 +141,8 @@ ul {
 .g-box {
   position: relative;
   margin: auto;
-  width: 2px;
-  height: 2px;  
+  width: 1.5px;
+  height: 1.5px;  
 }
 .g-main {
   --x: var(--xPos);
@@ -151,13 +151,14 @@ ul {
   li {
     position: absolute;
     inset: 0;
+    padding: 0;
     border-radius: 50%;
     animation: move 10s infinite linear;
   }
   @for $i from 1 through $count {
     li:nth-child(#{$i}) {
-      --rx: #{random(30) - 15}px;
-      --ry: #{random(30) - 15}px;
+      --rx: #{random(20) - 10}px;
+      --ry: #{random(20) - 10}px;
       background: #fff;
       animation-duration: #{random(12000) + 3000}ms;
       animation-delay: #{$i * (-10000 / $count) - random(10000)}ms;
@@ -172,7 +173,7 @@ ul {
   height: 3px;
   padding: 0;
   transform-style: preserve-3d;
-  perspective: 400px;
+  perspective: 500px;
 
   li {
     position: absolute;
@@ -187,8 +188,10 @@ ul {
       --toX: #{random(360)}deg;
       --toY: #{random(360)}deg;
       --toZ: #{random(360)}deg;
-      --fromDis: #{random(10) + 200}px;
-      --toDis: #{random(10) + 200}px;
+      --fromDis: 200px;
+      --toDis: 200px;
+      // --fromDis: #{(ramdom(10) > 5) ? (random(150) + 10) : (random(50) + 150)}px;
+      // --toDis: #{(ramdom(10) > 5) ? (random(150) + 10) : (random(50) + 150)}px;
       background: #fff;
       animation: rotate 10s infinite alternate,
         fadeIn 5s infinite;
@@ -218,9 +221,10 @@ ul {
 
 @keyframes fadeIn {
   0%,
-  70% {
+  90% {
     opacity: 1;
   }
+  95%,
   100% {
     opacity: 0;
   }
@@ -228,7 +232,7 @@ ul {
 
 @keyframes move {
   0% {
-    translate: 0 0;
+    translate: calc(var(--ry) * 15) calc(var(--rx) * 15);
   }
   100% {
     translate: calc(var(--x) + var(--rx)) calc(var(--y) + var(--ry));

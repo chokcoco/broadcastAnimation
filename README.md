@@ -1,7 +1,15 @@
-# Vue 3 + Vite
+## 跨窗口 CSS 动画效果展示 DEMO
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+基于 BroadcastChannel 的跨窗口 CSS 例子动画。
 
-## Recommended IDE Setup
+## How tu Run?
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+```
+pnpm i
+npm run dev
+```
+
+## Animation Showcase
+
+![](./public/bgbg.gif)
+![](./public/bgbgbg.gif)
