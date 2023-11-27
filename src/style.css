@@ -62,7 +62,7 @@ button:focus-visible {
   width: 100vw;
   height: 100vh;
   position: relative;
-  background: #000;
+  /* background: #000; */
   overflow: hidden;
 }
 

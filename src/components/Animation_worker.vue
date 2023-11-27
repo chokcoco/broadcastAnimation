@@ -25,7 +25,8 @@ export default {
       itemsCircle: []
     });
 
-    let broadcastChannel;
+    // 创建一个 SharedWorker 对象
+    let worker;
 
     const xPos = computed(() => {
       return remoteX.value - curX.value;
@@ -34,24 +35,28 @@ export default {
       return remoteY.value - curY.value;
     });
 
-    function createBroadcastChannel() {
-      broadcastChannel = new BroadcastChannel('g-ani');
-      broadcastChannel.onmessage = handleMessage;
+    function initWorker() {
+      // 创建一个 SharedWorker 对象
+      worker = new SharedWorker('/shared-worker.js', 'tabWorker');
+
+      // 监听消息事件
+      worker.port.onmessage = function (event) {
+        handleMessage(event.data);
+      };
     }
 
     function sendMessage(data) {
-      broadcastChannel.postMessage(data);
+      // 发送消息
+      worker.port.postMessage(data);
     }
 
-    function handleMessage(event) {
-      remoteX.value = event.data[0];
-      remoteY.value = event.data[1];
+    function handleMessage(data) {
+      
+      remoteX.value = data[0];
+      remoteY.value = data[1];
     }
 
     function resizeEventBind() {
-      // window.addEventListener('beforeunload', () => {
-      //   sendMessage('beforeunload');
-      // });
       // 临时的兼容方案，Maybe 性能不是很好
       function frameSetPos() {
         const pos = getCurPos();
@@ -97,7 +102,7 @@ export default {
     }
     
     onMounted(() => {
-      createBroadcastChannel();
+      initWorker();
       resizeEventBind();
       initArray()
       initCurPos();

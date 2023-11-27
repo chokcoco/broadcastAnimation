@@ -16,6 +16,8 @@ import { ref, reactive, computed, onMounted } from 'vue';
 
 export default {
   setup() {
+    let  id = 0;
+
     const curX = ref(0);
     const curY = ref(0);
     const remoteX = ref(0);
@@ -25,8 +27,6 @@ export default {
       itemsCircle: []
     });
 
-    let broadcastChannel;
-
     const xPos = computed(() => {
       return remoteX.value - curX.value;
     });
@@ -34,28 +34,57 @@ export default {
       return remoteY.value - curY.value;
     });
 
-    function createBroadcastChannel() {
-      broadcastChannel = new BroadcastChannel('g-ani');
-      broadcastChannel.onmessage = handleMessage;
+    function initLocalStorage() {
+      let tabArray = JSON.parse(localStorage.getItem('tab_array'));
+      if (!tabArray) {
+        const tabIndex = 1;
+        id = tabIndex;
+        localStorage.setItem('tab_array', JSON.stringify([tabIndex]));
+      } else {
+        const tabIndex = tabArray[tabArray.length - 1] + 1;
+        id = tabIndex;
+        const newTabArray = [...tabArray, tabIndex];
+        localStorage.setItem('tab_array', JSON.stringify(newTabArray));
+      }
     }
 
-    function sendMessage(data) {
-      broadcastChannel.postMessage(data);
+    function setLocalStorage(data) {
+      localStorage.setItem(`tab_index_${id}`, JSON.stringify(data));
     }
 
-    function handleMessage(event) {
-      remoteX.value = event.data[0];
-      remoteY.value = event.data[1];
+    function handleMessage(data) {
+      const rArray = JSON.parse(data);
+      remoteX.value = rArray[0];
+      remoteY.value = rArray[1];
     }
 
     function resizeEventBind() {
-      // window.addEventListener('beforeunload', () => {
-      //   sendMessage('beforeunload');
+      // window.addEventListener('resize', () => {
+      //   const pos = getCurPos();
+      //   setLocalStorage(pos);
+      //   initCurPos(pos);
       // });
+
+      // TODO: 窗口拖动有权限问题
+      // const firstScreen = (await window.getScreenDetails());
+      // firstScreen.addEventListener('currentscreenchange', () => {
+      //   const pos = getCurPos();
+      //   setLocalStorage(pos);
+      //   init(pos);
+      // });
+
+      window.addEventListener('storage', (event) => {
+        console.log('localStorage 变化了！', event);
+        console.log('键名：', event.key);
+        console.log('变化前的值：', event.oldValue);
+        console.log('变化后的值：', event.newValue);
+        handleMessage(event.newValue);
+      });
+
       // 临时的兼容方案，Maybe 性能不是很好
       function frameSetPos() {
         const pos = getCurPos();
-        sendMessage(pos);
+        setLocalStorage(pos);
         initCurPos(pos);
 
         window.requestAnimationFrame(frameSetPos);
@@ -97,7 +126,7 @@ export default {
     }
     
     onMounted(() => {
-      createBroadcastChannel();
+      initLocalStorage();
       resizeEventBind();
       initArray()
       initCurPos();
